@@ -1,0 +1,130 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
+
+//Create a class.
+class ReservationSystem {
+    private Map<Integer, Reservation> reservations = new HashMap<>();
+    private int nextPNR = 1;
+
+    public static void main(String[] args) {
+        ReservationSystem system = new ReservationSystem();
+        system.run();
+    }
+
+    public void run() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("1. Reserve a Ticket");
+            System.out.println("2. Cancel a Ticket");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    reserveTicket();
+                    break;
+                case 2:
+                    cancelTicket();
+                    break;
+                case 3:
+                    System.exit(0);
+            }
+        }
+    }
+
+    public void reserveTicket() {
+        Scanner scanner = new Scanner(System.in);
+
+        // Generate a random PNR number
+        int pnr = generatePNR();
+
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter train number: ");
+        String trainNumber = scanner.nextLine();
+        System.out.print("Enter class type: ");
+        String classType = scanner.nextLine();
+        System.out.print("Enter date of journey: ");
+        String dateOfJourney = scanner.nextLine();
+        System.out.print("Enter source: ");
+        String source = scanner.nextLine();
+        System.out.print("Enter destination: ");
+        String destination = scanner.nextLine();
+
+        Reservation reservation = new Reservation(pnr, name, trainNumber, classType, dateOfJourney, source, destination);
+        reservations.put(pnr, reservation);
+
+        System.out.println("Reservation successful. Your PNR number is: " + pnr);
+    }
+
+    public void cancelTicket() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter PNR number for cancellation: ");
+        int pnr = scanner.nextInt();
+
+        if (reservations.containsKey(pnr)) {
+            reservations.remove(pnr);
+            System.out.println("Ticket with PNR " + pnr + " is canceled.");
+        } else {
+            System.out.println("Ticket with PNR " + pnr + " not found.");
+        }
+    }
+
+    public int generatePNR() {
+        // Generate a random 6-digit PNR
+        Random random = new Random();
+        return 100000 + random.nextInt(900000);
+    }
+}
+
+class Reservation {
+    private int pnr;
+    private String name;
+    private String trainNumber;
+    private String classType;
+    private String dateOfJourney;
+    private String source;
+    private String destination;
+
+    public Reservation(int pnr, String name, String trainNumber, String classType, 
+                               String dateOfJourney, String source, String destination)   {
+        this.pnr = pnr;
+        this.name = name;
+        this.trainNumber = trainNumber;
+        this.classType = classType;
+        this.dateOfJourney = dateOfJourney;
+        this.source = source;
+        this.destination = destination;
+    }
+
+    public int getPNR() {
+        return pnr;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTrainNumber() {
+        return trainNumber;
+    }
+
+    public String getClassType() {
+        return classType;
+    }
+
+    public String getDateOfJourney() {
+        return dateOfJourney;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+}
